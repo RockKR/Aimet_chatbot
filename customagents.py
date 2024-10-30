@@ -93,6 +93,39 @@ class CustomAgents:
     # Agent explore
 
     @staticmethod
+    def create_severity_level_tracker(llm_config) -> AssistantAgent:
+        return AssistantAgent(
+            name="Severity_Level_Tracker",
+            system_message="""
+            Consider the above dialogue between an emotional support seeker and a supporter. 
+            Analyze the seeker's responses to assess their emotional state and determine the severity level based on the following criteria:
+            - Mild: Minor emotional or behavioral disruptions (score 0-5)
+            - Moderate: Frequent disruptions that impact daily life (score 6-15)
+            - Severe: Persistent or critical disruptions (score 16+)
+
+            Identify specific symptoms mentioned by the seeker and assign points as follows:
+            - อาการเหนื่อยง่าย: 2 points
+            - ไม่มีสมาธิ: 2 points
+            - การนอนเปลี่ยนไป: 3 points
+            - ความอยากอาหารเปลี่ยนไป: 3 points
+            - กระสับกระส่าย: 3 points
+            - รู้สึกไร้ค่า: 4 points
+            - ความคิดอยากทำร้ายตัวเอง: 10 points
+
+            Return the result as a single JSON object:
+            {
+                "Severity Level": "",  // Mild, Moderate, or Severe
+                "score": 0,            // Cumulative score based on identified symptoms
+                "symptoms_detected": [] // List of detected symptoms
+            }
+
+            Ensure the JSON object is formatted correctly without including ```json syntax.
+            """,
+            llm_config=llm_config,
+        )
+
+
+    @staticmethod
     def create_start_state_agent(llm_config) -> AssistantAgent:
         return AssistantAgent(
             name="Start_State_Agent",

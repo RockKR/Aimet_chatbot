@@ -56,6 +56,8 @@ comforting_aspect_promoter = add_agent(CustomAgents.create_comforting_aspect_pro
 main_problem_state_tracker = add_agent(CustomAgents.create_main_problem_state_tracker, llm_config)
 main_problem_aspect_promoter = add_agent(CustomAgents.create_main_problem_aspect_promoter, llm_config)
 
+severity_level_state_tracker = add_agent(CustomAgents.create_severity_level_tracker, llm_config)
+
 start_state_agent = add_agent(CustomAgents.create_start_state_agent, llm_config)
 counseling_exploration_agent = add_agent(CustomAgents.create_counseling_exploration_agent, llm_config)
 counseling_medium_exploration_agent = add_agent(CustomAgents.create_counseling_medium_exploration_agent, llm_config)
@@ -137,6 +139,18 @@ while True:
             ]
             # response_format={"type": "json_object"}  # Add response_format here
         )
+
+         # Severity Level Tracker
+        severity_level_tracker_result = user_proxy.initiate_chat(
+            recipient=severity_level_state_tracker,
+            message="",
+            max_turns=1,
+            summary_method="last_msg",
+            carryover=[f"[Dialogue History] {str(dialogue_history)}"]
+            # response_format={"type": "json_object"}  # Add response_format here
+        )
+
+        severity_level_json = print_and_parse_agent_result("Severity Level:", severity_level_tracker_result)
 
         #####################################
         if session_flow_json and session_flow_json.get('Current Stage') == 'Identify main problem session':
