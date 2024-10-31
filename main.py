@@ -124,8 +124,8 @@ while True:
             message="",
             max_turns=1,
             summary_method="last_msg",
-            carryover=[f"[Dialogue History] {str(dialogue_history)}"]
-            # response_format={"type": "json_object"}  # Add response_format here
+            carryover=[f"[Dialogue History] {str(dialogue_history)}"],
+            response_format={"type": "json_object"}  # Add response_format here
         )
 
         comforting_aspect_promoter_result = user_proxy.initiate_chat(
@@ -136,18 +136,18 @@ while True:
             carryover=[
                 f"[Dialogue History] {str(dialogue_history)}",
                 f"[Comforting Summary] {str(comforting_state_summary_result.summary)}",
-            ]
-            # response_format={"type": "json_object"}  # Add response_format here
+            ],
+            response_format={"type": "json_object"}  # Add response_format here
         )
 
-         # Severity Level Tracker
+        # Severity Level Tracker
         severity_level_tracker_result = user_proxy.initiate_chat(
             recipient=severity_level_state_tracker,
             message="",
             max_turns=1,
             summary_method="last_msg",
-            carryover=[f"[Dialogue History] {str(dialogue_history)}"]
-            # response_format={"type": "json_object"}  # Add response_format here
+            carryover=[f"[Dialogue History] {str(dialogue_history)}"],
+            response_format={"type": "json_object"}  # Add response_format here
         )
 
         severity_level_json = print_and_parse_agent_result("Severity Level:", severity_level_tracker_result)
